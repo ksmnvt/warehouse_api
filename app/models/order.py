@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, Enum
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -21,7 +22,12 @@ class Order(Base):
 
     # Primary key
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow, server_default=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+    created_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        server_default=func.now(),
+    )
     status = Column(Enum(OrderStatus), nullable=False, default=OrderStatus.PENDING, server_default=OrderStatus.PENDING.value)
     
     price = Column(Float, nullable=False)
