@@ -11,7 +11,7 @@ from app.crud.order import (
     get_orders,
     update_order_status,
 )
-from app.database import get_db
+from app.utils.dependencies import get_db
 from app.models.order import OrderStatus
 from app.schemas.order import OrderCreate, OrderItemRead, OrderRead
 
