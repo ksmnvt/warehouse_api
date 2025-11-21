@@ -70,6 +70,12 @@ def test_update_product(client: TestClient):
     assert data["price"] == update_data["price"]
     assert data["stock"] == update_data["stock"]
 
+def test_update_nonexistent_product(client: TestClient):
+    """Tests updating a non-existent product"""
+    update_data = {"name": "This product does not exist"}
+    response = client.put("/products/999", json=update_data)
+    assert response.status_code == 404
+
 def test_delete_product(client: TestClient):
     """Tests product deletion"""
     response = client.post("/products/", json=test_product_data)
@@ -80,6 +86,23 @@ def test_delete_product(client: TestClient):
     
     response = client.get(f"/products/{product_id}")
     assert response.status_code == 404
+
+def test_delete_nonexistent_product(client: TestClient):
+    """Tests deleting a non-existent product"""
+    response = client.delete("/products/999")
+    assert response.status_code == 404
+
+def test_delete_product_with_active_order(client: TestClient):
+    """Tests that a product with an active order cannot be deleted"""
+    product_response = client.post("/products/", json=test_product_data)
+    product_id = product_response.json()["id"]
+
+    order_data = {"items": [{"product_id": product_id, "quantity": 1}]}
+    client.post("/orders/", json=order_data)
+
+    delete_response = client.delete(f"/products/{product_id}")
+    assert delete_response.status_code == 400
+    assert "associated order items exist" in delete_response.text
 
 def test_create_product_invalid_data(client: TestClient):
     """Tests creating a product with invalid data"""
