@@ -68,6 +68,9 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         db.refresh(db_order)
         logger.info(f"Order created successfully with ID: {db_order.id}")
         return db_order
+    except HTTPException as e:
+        db.rollback()
+        raise e
     except Exception as e:
         logger.error(f"Error creating order: {str(e)}")
         db.rollback()

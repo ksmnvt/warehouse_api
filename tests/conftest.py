@@ -4,9 +4,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.database import Base
+from app.database import Base, get_db
+from app.main import app
 from app.models.product import Product
 from app.models.order import Order, OrderItem
+from fastapi.testclient import TestClient
+import json
+
+# Global list to store report data
+report_data = []
 
 # Use in-memory database for tests
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
