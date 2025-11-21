@@ -37,23 +37,3 @@ def test_session(test_engine):
         session.query(Product).delete()
         session.commit()
         session.close()
-
-@pytest.fixture(scope="session", autouse=True)
-def setup_test_db():
-    # Remove the old database file if it exists
-    if os.path.exists("test.db"):
-        os.remove("test.db")
-    
-    # Create a new engine
-    engine = create_engine("sqlite:///test.db")
-    
-    try:
-        # Create all tables
-        Base.metadata.create_all(bind=engine)
-        yield
-    finally:
-        # Drop all tables
-        Base.metadata.drop_all(bind=engine)
-        # Remove the database file
-        if os.path.exists("test.db"):
-            os.remove("test.db") 

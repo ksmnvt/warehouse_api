@@ -12,13 +12,12 @@ class ProductBase(BaseModel):
 class ProductCreate(ProductBase):
     pass
 
+from pydantic import BaseModel, Field, ConfigDict
+
 # Schema for reading product data
 class ProductRead(ProductBase):
     id: int
-
-    class Config:
-        # Enable ORM mode for SQLAlchemy models
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Schema for updating a product with optional fields
 class ProductUpdate(BaseModel):

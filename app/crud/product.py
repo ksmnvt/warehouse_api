@@ -4,15 +4,13 @@ from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductUpdate
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a new product in the database
 def create_product(db: Session, product: ProductCreate):
     try:
-        logger.info(f"Creating new product with data: {product.dict()}")
-        db_product = Product(**product.dict())
+        logger.info(f"Creating new product with data: {product.model_dump()}")
+        db_product = Product(**product.model_dump())
         db.add(db_product)
         db.commit()
         db.refresh(db_product)
@@ -38,7 +36,7 @@ def update_product(db: Session, product_id: int, product: ProductUpdate):
         raise HTTPException(status_code=404, detail="Product not found")
     
     # Update only the fields that are provided
-    update_data = product.dict(exclude_unset=True)
+    update_data = product.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(db_product, key, value)
     

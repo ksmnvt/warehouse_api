@@ -1,15 +1,9 @@
-import os
 import pytest
 from sqlalchemy import inspect
-from app.database import Base, engine
 
-def test_database_creation():
+def test_database_creation(test_engine):
     """Tests database creation and structure"""
-    # Check that the database file is created
-    assert os.path.exists("test.db")
-    
-    # Check that the products table exists
-    inspector = inspect(engine)
+    inspector = inspect(test_engine)
     assert "products" in inspector.get_table_names()
     
     # Check table structure
