@@ -1,8 +1,15 @@
 import os
+import sys
+from pathlib import Path
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from app.database import Base, get_db
 from app.main import app
@@ -43,3 +50,14 @@ def test_session(test_engine):
         session.query(Product).delete()
         session.commit()
         session.close()
+
+
+@pytest.fixture(scope="function")
+def client(test_session):
+    def override_get_db():
+        yield test_session
+
+    app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()

@@ -1,11 +1,14 @@
-from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, Enum
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
+
+from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, Enum
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
 from app.database import Base
 
-class OrderStatus(enum.Enum):
+
+class OrderStatus(str, enum.Enum):
     PENDING = "pending"            # Order created but not yet confirmed (e.g., awaiting payment)
     CONFIRMED = "confirmed"        # Order confirmed (payment received or manually approved)
     IN_PROGRESS = "in progress"    # Order is being processed (e.g., packed at the warehouse)
@@ -39,7 +42,7 @@ class OrderItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"))
-    product_id = Column(Integer, ForeignKey("products.id"))
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="RESTRICT"))
     quantity = Column(Integer, nullable=False)
     
     order = relationship("Order", back_populates="items")

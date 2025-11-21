@@ -1,6 +1,5 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.schemas.order import OrderStatus
 
 def test_create_order(client: TestClient):
     """Tests order creation"""
