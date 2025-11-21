@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas.product import ProductCreate, ProductRead, ProductUpdate
 from app.crud import product as crud
-from app.utils.dependencies import get_db
+from app.database import get_db
 from typing import List
 
 # Initialize router with prefix and tags
