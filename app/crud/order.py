@@ -4,16 +4,14 @@ from app.models.order import Order, OrderItem, OrderStatus
 from app.schemas.order import OrderCreate
 from app.models.product import Product
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
-# Configure logging for the module
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
  # Create a new order with product availability check and stock update
 def create_order(db: Session, order: OrderCreate) -> Order:   
     try:
-        logger.info(f"Creating new order with data: {order.dict()}")
+        logger.info(f"Creating new order with data: {order.model_dump()}")
         
         # Initialize variables for order processing
         total_price = 0
@@ -61,7 +59,7 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         db_order = Order(
             status=OrderStatus.PENDING,
             price=total_price,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
             items=order_items
         )
         
@@ -70,6 +68,9 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         db.refresh(db_order)
         logger.info(f"Order created successfully with ID: {db_order.id}")
         return db_order
+    except HTTPException as e:
+        db.rollback()
+        raise e
     except Exception as e:
         logger.error(f"Error creating order: {str(e)}")
         db.rollback()

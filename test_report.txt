@@ -1,0 +1,671 @@
+Test 1
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 2
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.498456",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 3
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 4
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.539784",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 5
+====================
+Endpoint: GET /orders/1
+Request: null
+Response:
+  Status Code: 200
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.539784",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 6
+====================
+Endpoint: GET /orders/999
+Request: null
+Response:
+  Status Code: 404
+  Body: {
+  "detail": "Order not found"
+}
+
+Test 7
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 8
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.602929",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 9
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 2,
+  "created_at": "2025-11-21T04:36:51.616490",
+  "status": "pending",
+  "items": [
+    {
+      "id": 2,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 10
+====================
+Endpoint: GET /orders/
+Request: null
+Response:
+  Status Code: 200
+  Body: [
+  {
+    "id": 1,
+    "created_at": "2025-11-21T04:36:51.602929",
+    "status": "pending",
+    "items": [
+      {
+        "id": 1,
+        "product": {
+          "id": 1,
+          "name": "Test Product",
+          "price": 99.99
+        },
+        "quantity": 2,
+        "total_price": 199.98
+      }
+    ],
+    "price": 199.98
+  },
+  {
+    "id": 2,
+    "created_at": "2025-11-21T04:36:51.616490",
+    "status": "pending",
+    "items": [
+      {
+        "id": 2,
+        "product": {
+          "id": 1,
+          "name": "Test Product",
+          "price": 99.99
+        },
+        "quantity": 2,
+        "total_price": 199.98
+      }
+    ],
+    "price": 199.98
+  }
+]
+
+Test 11
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 12
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.654605",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 13
+====================
+Endpoint: PUT /orders/1/status?status_value=confirmed
+Request: null
+Response:
+  Status Code: 200
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.654605",
+  "status": "confirmed",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 14
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 15
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+Response:
+  Status Code: 201
+  Body: {
+  "id": 1,
+  "created_at": "2025-11-21T04:36:51.701379",
+  "status": "pending",
+  "items": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "Test Product",
+        "price": 99.99
+      },
+      "quantity": 2,
+      "total_price": 199.98
+    }
+  ],
+  "price": 199.98
+}
+
+Test 16
+====================
+Endpoint: DELETE /orders/1
+Request: null
+Response:
+  Status Code: 204
+  Body: null
+
+Test 17
+====================
+Endpoint: GET /orders/1
+Request: null
+Response:
+  Status Code: 404
+  Body: {
+  "detail": "Order not found"
+}
+
+Test 18
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 1
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 1,
+  "id": 1
+}
+
+Test 19
+====================
+Endpoint: POST /orders/
+Request: {
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 10
+    }
+  ]
+}
+Response:
+  Status Code: 400
+  Body: {
+  "detail": "Not enough stock for products:\n- Test Product: requested 10, available 1\n"
+}
+
+Test 20
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 21
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 22
+====================
+Endpoint: GET /products/1
+Request: null
+Response:
+  Status Code: 200
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 23
+====================
+Endpoint: GET /products/999
+Request: null
+Response:
+  Status Code: 404
+  Body: {
+  "detail": "Product not found"
+}
+
+Test 24
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 25
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Another Product",
+  "description": "Another Description",
+  "price": 199.99,
+  "stock": 50
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Another Product",
+  "description": "Another Description",
+  "price": 199.99,
+  "stock": 50,
+  "id": 2
+}
+
+Test 26
+====================
+Endpoint: GET /products/
+Request: null
+Response:
+  Status Code: 200
+  Body: [
+  {
+    "name": "Test Product",
+    "description": "Test Description",
+    "price": 99.99,
+    "stock": 100,
+    "id": 1
+  },
+  {
+    "name": "Another Product",
+    "description": "Another Description",
+    "price": 199.99,
+    "stock": 50,
+    "id": 2
+  }
+]
+
+Test 27
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 28
+====================
+Endpoint: PUT /products/1
+Request: {
+  "name": "Updated Product",
+  "description": "Updated Description",
+  "price": 149.99,
+  "stock": 75
+}
+Response:
+  Status Code: 200
+  Body: {
+  "name": "Updated Product",
+  "description": "Updated Description",
+  "price": 149.99,
+  "stock": 75,
+  "id": 1
+}
+
+Test 29
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 201
+  Body: {
+  "name": "Test Product",
+  "description": "Test Description",
+  "price": 99.99,
+  "stock": 100,
+  "id": 1
+}
+
+Test 30
+====================
+Endpoint: DELETE /products/1
+Request: null
+Response:
+  Status Code: 204
+  Body: null
+
+Test 31
+====================
+Endpoint: GET /products/1
+Request: null
+Response:
+  Status Code: 404
+  Body: {
+  "detail": "Product not found"
+}
+
+Test 32
+====================
+Endpoint: POST /products/
+Request: {
+  "name": "Invalid Product",
+  "description": "Invalid Description",
+  "price": -99.99,
+  "stock": 100
+}
+Response:
+  Status Code: 422
+  Body: {
+  "detail": [
+    {
+      "type": "greater_than",
+      "loc": [
+        "body",
+        "price"
+      ],
+      "msg": "Input should be greater than 0",
+      "input": -99.99,
+      "ctx": {
+        "gt": 0.0
+      }
+    }
+  ]
+}
