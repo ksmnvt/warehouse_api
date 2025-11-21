@@ -93,8 +93,14 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         raise HTTPException(status_code=500, detail=f"Error creating order: {str(e)}")
 
 # Get paginated list of all orders
-def get_orders(db: Session, skip: int = 0, limit: int = 100) -> list[Order]:   
-    return db.query(Order).offset(skip).limit(limit).all()
+def get_orders(db: Session, skip: int = 0, limit: int = 100) -> list[Order]:
+    return (
+        db.query(Order)
+        .options(joinedload(Order.items).joinedload(OrderItem.product))
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 # Get single order with related items and products
 def get_order(db: Session, order_id: int) -> Order | None:  
