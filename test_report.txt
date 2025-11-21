@@ -31,7 +31,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.605661",
+  "created_at": "2025-11-21T19:32:04.841559",
   "status": "pending",
   "items": [
     {
@@ -83,7 +83,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.639405",
+  "created_at": "2025-11-21T19:32:04.873840",
   "status": "pending",
   "items": [
     {
@@ -108,7 +108,7 @@ Request: GET /orders/1
 Response: 200
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.639405",
+  "created_at": "2025-11-21T19:32:04.873840",
   "status": "pending",
   "items": [
     {
@@ -169,7 +169,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.705063",
+  "created_at": "2025-11-21T19:32:04.921714",
   "status": "pending",
   "items": [
     {
@@ -202,7 +202,7 @@ Body: {
 Response: 201
 Body: {
   "id": 2,
-  "created_at": "2025-11-21T19:18:43.726116",
+  "created_at": "2025-11-21T19:32:04.929585",
   "status": "pending",
   "items": [
     {
@@ -228,7 +228,7 @@ Response: 200
 Body: [
   {
     "id": 1,
-    "created_at": "2025-11-21T19:18:43.705063",
+    "created_at": "2025-11-21T19:32:04.921714",
     "status": "pending",
     "items": [
       {
@@ -247,7 +247,7 @@ Body: [
   },
   {
     "id": 2,
-    "created_at": "2025-11-21T19:18:43.726116",
+    "created_at": "2025-11-21T19:32:04.929585",
     "status": "pending",
     "items": [
       {
@@ -300,7 +300,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.791793",
+  "created_at": "2025-11-21T19:32:04.955806",
   "status": "pending",
   "items": [
     {
@@ -325,7 +325,7 @@ Request: PUT /orders/1/status?status_value=confirmed
 Response: 200
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.791793",
+  "created_at": "2025-11-21T19:32:04.955806",
   "status": "confirmed",
   "items": [
     {
@@ -377,7 +377,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:18:43.826025",
+  "created_at": "2025-11-21T19:32:04.988243",
   "status": "pending",
   "items": [
     {
