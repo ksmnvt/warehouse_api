@@ -1,8 +1,11 @@
+import logging
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+
+from app.models.order import OrderItem
 from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductUpdate
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +52,15 @@ def delete_product(db: Session, product_id: int):
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    
+
+    has_order_items = (
+        db.query(OrderItem).filter(OrderItem.product_id == product_id).count() > 0
+    )
+    if has_order_items:
+        raise HTTPException(
+            status_code=400,
+            detail="Product cannot be deleted while associated order items exist",
+        )
+
     db.delete(db_product)
     db.commit()
