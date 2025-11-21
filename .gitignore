@@ -43,4 +43,5 @@ Thumbs.db
 
 # Project specific
 *.db
-.pytest_cache/ 
+.pytest_cache/
+*.log

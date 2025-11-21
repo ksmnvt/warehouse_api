@@ -22,6 +22,30 @@ import json
 # Global list to store report data
 report_data = []
 
+# Custom TestClient for reporting
+class ReportingTestClient(TestClient):
+    def request(self, method, url, **kwargs):
+        response = super().request(method, url, **kwargs)
+
+        response_body = ""
+        try:
+            response_body = response.json()
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            response_body = response.text
+
+        report_data.append(
+            {
+                "request": {
+                    "method": method,
+                    "url": url,
+                    "params": kwargs.get("params"),
+                    "json": kwargs.get("json"),
+                },
+                "response": {"status_code": response.status_code, "body": response_body},
+            }
+        )
+        return response
+
 # Use in-memory database for tests
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
@@ -59,6 +83,39 @@ def client(test_session):
         yield test_session
 
     app.dependency_overrides[get_db] = override_get_db
-    with TestClient(app) as test_client:
+    with ReportingTestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+def pytest_sessionfinish(session):
+    """
+    Hook to generate a report after the test session finishes.
+    """
+    if not report_data:
+        return
+
+    report_path = ROOT_DIR / "test_report.txt"
+    with open(report_path, "w") as f:
+        for record in report_data:
+            req = record["request"]
+            res = record["response"]
+
+            f.write("=" * 80 + "\n")
+            f.write(f"Request: {req['method']} {req['url']}\n")
+            if req["params"]:
+                f.write(f"Params: {json.dumps(req['params'], indent=2)}\n")
+            if req["json"]:
+                f.write(f"Body: {json.dumps(req['json'], indent=2)}\n")
+
+            f.write("-" * 80 + "\n")
+            f.write(f"Response: {res['status_code']}\n")
+            if res["body"]:
+                if isinstance(res["body"], dict) or isinstance(res["body"], list):
+                    f.write(f"Body: {json.dumps(res['body'], indent=2)}\n")
+                else:
+                    f.write(f"Body: {res['body']}\n")
+            f.write("=" * 80 + "\n\n")
+
+    # Clear the report data for the next run
+    report_data.clear()
