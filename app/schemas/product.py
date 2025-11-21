@@ -1,5 +1,7 @@
-from pydantic import BaseModel, Field
 from typing import Optional
+
+from pydantic import BaseModel, Field, ConfigDict
+
 
 # Base product schema with common fields
 class ProductBase(BaseModel):
@@ -8,16 +10,17 @@ class ProductBase(BaseModel):
     price: float = Field(..., gt=0)
     stock: int = Field(..., ge=0)
 
+
 # Schema for creating a new product
 class ProductCreate(ProductBase):
     pass
 
-from pydantic import BaseModel, Field, ConfigDict
 
 # Schema for reading product data
 class ProductRead(ProductBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
 
 # Schema for updating a product with optional fields
 class ProductUpdate(BaseModel):
@@ -25,6 +28,7 @@ class ProductUpdate(BaseModel):
     description: Optional[str] = Field(None, min_length=1, max_length=500)
     price: Optional[float] = Field(None, gt=0)
     stock: Optional[int] = Field(None, ge=0)
+
 
 # Schema for success message response
 class SuccessMessage(BaseModel):

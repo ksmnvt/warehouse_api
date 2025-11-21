@@ -8,11 +8,15 @@ from app.database import Base, engine
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create all database tables
-Base.metadata.create_all(bind=engine)
-
 # Initialize FastAPI application
 app = FastAPI(title="Warehouse API")
+
+
+@app.on_event("startup")
+def on_startup():
+    """Ensure database schema is available when the app starts."""
+    Base.metadata.create_all(bind=engine)
+
 
 # Include routers
 app.include_router(product_router)
