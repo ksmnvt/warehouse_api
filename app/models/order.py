@@ -32,8 +32,6 @@ class Order(Base):
         server_default=func.now(),
     )
     status = Column(Enum(OrderStatus), nullable=False, default=OrderStatus.PENDING, server_default=OrderStatus.PENDING.value)
-    
-    price = Column(Float, nullable=False)
 
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
@@ -44,6 +42,7 @@ class OrderItem(Base):
     order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"))
     product_id = Column(Integer, ForeignKey("products.id", ondelete="RESTRICT"))
     quantity = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False)
     
     order = relationship("Order", back_populates="items")
     product = relationship("Product")

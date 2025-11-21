@@ -26,19 +26,19 @@ class OrderItemRead(BaseModel):
     item_id: int = Field(alias="id")
     product: ProductInfo
     quantity: int
+    price: float
 
     @computed_field
     @property
     def total_price(self) -> float:
-        return self.product.price * self.quantity
+        return self.price * self.quantity
 
     model_config = ConfigDict(from_attributes=True)
 
-class OrderBase(BaseModel):
-    order_total: float = Field(..., gt=0)
 
 class OrderCreate(BaseModel):
     items: List[OrderItemCreate]
+
 
 # Schema for reading product data
 class OrderRead(BaseModel):
@@ -46,7 +46,11 @@ class OrderRead(BaseModel):
     created_at: datetime
     status: OrderStatus
     items: List[OrderItemRead] = Field(default_factory=list)
-    order_total: float = Field(alias="price")
+
+    @computed_field
+    @property
+    def order_total(self) -> float:
+        return sum(item.total_price for item in self.items)
 
     model_config = ConfigDict(from_attributes=True)
 

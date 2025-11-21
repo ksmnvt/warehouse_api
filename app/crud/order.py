@@ -59,23 +59,21 @@ def create_order(db: Session, order: OrderCreate) -> Order:
                 detail="Not enough stock for products:\n" + "\n".join(error_lines),
             )
 
-        total_price = 0.0
         order_items: list[OrderItem] = []
         for product_id, quantity in requested_quantities.items():
             product = products[product_id]
             product.stock -= quantity
-            total_price += product.price * quantity
             order_items.append(
                 OrderItem(
                     product_id=product_id,
                     quantity=quantity,
+                    price=product.price,
                 )
             )
             logger.info("Product %s added to order. Stock: %s", product.name, product.stock)
 
         db_order = Order(
             status=OrderStatus.PENDING,
-            price=total_price,
             created_at=datetime.now(timezone.utc),
             items=order_items,
         )
