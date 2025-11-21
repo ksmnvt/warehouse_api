@@ -20,6 +20,8 @@ def test_create_order(client: TestClient):
     assert data["status"] == "pending"
     assert len(data["items"]) == 1
     assert data["items"][0]["product"]["id"] == product_id
+    assert data["items"][0]["price"] == product_data["price"]
+    assert data["order_total"] == product_data["price"] * order_data["items"][0]["quantity"]
 
 def test_get_order(client: TestClient):
     """Tests getting an order by ID"""
