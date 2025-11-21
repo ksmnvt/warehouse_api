@@ -59,10 +59,12 @@ def create_order(db: Session, order: OrderCreate) -> Order:
                 detail="Not enough stock for products:\n" + "\n".join(error_lines),
             )
 
+        total_price = 0.0
         order_items: list[OrderItem] = []
         for product_id, quantity in requested_quantities.items():
             product = products[product_id]
             product.stock -= quantity
+            total_price += product.price * quantity
             order_items.append(
                 OrderItem(
                     product_id=product_id,
@@ -81,7 +83,7 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         db.commit()
         db.refresh(db_order)
         logger.info("Order created successfully with ID: %s", db_order.id)
-        return get_order(db, db_order.id)
+        return db_order
     except HTTPException:
         db.rollback()
         raise

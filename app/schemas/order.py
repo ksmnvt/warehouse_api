@@ -43,11 +43,7 @@ class OrderRead(BaseModel):
     created_at: datetime
     status: OrderStatus
     items: List[OrderItemRead] = Field(default_factory=list)
-
-    @computed_field
-    @property
-    def order_total(self) -> float:
-        return float(sum(item.total_price for item in self.items))
+    order_total: float = Field(alias="price")
 
     model_config = ConfigDict(from_attributes=True)
 
