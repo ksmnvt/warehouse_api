@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
@@ -80,9 +80,7 @@ class OrderRead(BaseModel):
             order_total=order.price
         )
 
-    class Config:
-        # Enable ORM mode for SQLAlchemy models
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Schema for success message response
