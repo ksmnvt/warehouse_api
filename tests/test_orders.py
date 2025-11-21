@@ -13,13 +13,14 @@ def test_create_order(client: TestClient):
     product_id = response.json()["id"]
     
     order_data = {"items": [{"product_id": product_id, "quantity": 2}]}
-    
+
     response = client.post("/orders/", json=order_data)
     assert response.status_code == 201
     data = response.json()
     assert data["status"] == "pending"
     assert len(data["items"]) == 1
     assert data["items"][0]["product"]["id"] == product_id
+    assert data["order_total"] == pytest.approx(199.98)
 
 def test_get_order(client: TestClient):
     """Tests getting an order by ID"""
@@ -35,12 +36,13 @@ def test_get_order(client: TestClient):
     order_data = {"items": [{"product_id": product_id, "quantity": 2}]}
     response = client.post("/orders/", json=order_data)
     order_id = response.json()["id"]
-    
+
     response = client.get(f"/orders/{order_id}")
     assert response.status_code == 200
     data = response.json()
     assert data["id"] == order_id
     assert len(data["items"]) == 1
+    assert data["order_total"] == pytest.approx(199.98)
 
 def test_get_nonexistent_order(client: TestClient):
     """Tests getting a non-existent order"""

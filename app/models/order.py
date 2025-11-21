@@ -31,9 +31,12 @@ class Order(Base):
         default=datetime.utcnow,
         server_default=func.now(),
     )
-    status = Column(Enum(OrderStatus), nullable=False, default=OrderStatus.PENDING, server_default=OrderStatus.PENDING.value)
-    
-    price = Column(Float, nullable=False)
+    status = Column(
+        Enum(OrderStatus),
+        nullable=False,
+        default=OrderStatus.PENDING,
+        server_default=OrderStatus.PENDING.value,
+    )
 
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 

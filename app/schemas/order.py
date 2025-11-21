@@ -34,9 +34,6 @@ class OrderItemRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class OrderBase(BaseModel):
-    order_total: float = Field(..., gt=0)
-
 class OrderCreate(BaseModel):
     items: List[OrderItemCreate]
 

@@ -75,7 +75,6 @@ def create_order(db: Session, order: OrderCreate) -> Order:
 
         db_order = Order(
             status=OrderStatus.PENDING,
-            price=total_price,
             created_at=datetime.now(timezone.utc),
             items=order_items,
         )
