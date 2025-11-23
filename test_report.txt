@@ -31,7 +31,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.344641",
+  "created_at": "2025-11-21T20:12:45.077737",
   "status": "pending",
   "items": [
     {
@@ -83,7 +83,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.374654",
+  "created_at": "2025-11-21T20:12:45.114135",
   "status": "pending",
   "items": [
     {
@@ -108,7 +108,7 @@ Request: GET /orders/1
 Response: 200
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.374654",
+  "created_at": "2025-11-21T20:12:45.114135",
   "status": "pending",
   "items": [
     {
@@ -169,7 +169,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.418034",
+  "created_at": "2025-11-21T20:12:45.180423",
   "status": "pending",
   "items": [
     {
@@ -202,7 +202,7 @@ Body: {
 Response: 201
 Body: {
   "id": 2,
-  "created_at": "2025-11-21T19:48:08.425194",
+  "created_at": "2025-11-21T20:12:45.193657",
   "status": "pending",
   "items": [
     {
@@ -228,7 +228,7 @@ Response: 200
 Body: [
   {
     "id": 1,
-    "created_at": "2025-11-21T19:48:08.418034",
+    "created_at": "2025-11-21T20:12:45.180423",
     "status": "pending",
     "items": [
       {
@@ -247,7 +247,7 @@ Body: [
   },
   {
     "id": 2,
-    "created_at": "2025-11-21T19:48:08.425194",
+    "created_at": "2025-11-21T20:12:45.193657",
     "status": "pending",
     "items": [
       {
@@ -300,7 +300,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.453121",
+  "created_at": "2025-11-21T20:12:45.232717",
   "status": "pending",
   "items": [
     {
@@ -325,7 +325,7 @@ Request: PUT /orders/1/status?status_value=confirmed
 Response: 200
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.453121",
+  "created_at": "2025-11-21T20:12:45.232717",
   "status": "confirmed",
   "items": [
     {
@@ -377,7 +377,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.483543",
+  "created_at": "2025-11-21T20:12:45.276887",
   "status": "pending",
   "items": [
     {
@@ -443,7 +443,7 @@ Body: {
 --------------------------------------------------------------------------------
 Response: 400
 Body: {
-  "detail": "Not enough stock for products:\n- Test Product: requested 10, available 1"
+  "detail": "Not enough stock for product: Test Product"
 }
 ================================================================================
 
@@ -513,7 +513,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.552015",
+  "created_at": "2025-11-21T20:12:45.383542",
   "status": "pending",
   "items": [
     {
@@ -565,7 +565,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.575329",
+  "created_at": "2025-11-21T20:12:45.415572",
   "status": "pending",
   "items": [
     {
@@ -606,7 +606,7 @@ Request: GET /orders/1
 Response: 200
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.575329",
+  "created_at": "2025-11-21T20:12:45.415572",
   "status": "pending",
   "items": [
     {
@@ -871,7 +871,7 @@ Body: {
 Response: 201
 Body: {
   "id": 1,
-  "created_at": "2025-11-21T19:48:08.743018",
+  "created_at": "2025-11-21T20:12:45.665310",
   "status": "pending",
   "items": [
     {

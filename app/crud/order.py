@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import update as sqlalchemy_update
 
 from app.models.order import Order, OrderItem, OrderStatus
 from app.models.product import Product
@@ -16,61 +17,60 @@ def create_order(db: Session, order: OrderCreate) -> Order:
     try:
         logger.info("Creating new order with data: %s", order.model_dump())
 
-        product_ids = [item.product_id for item in order.items]
-        if not product_ids:
-            raise HTTPException(status_code=400, detail="Order must contain at least one item")
+        if not order.items:
+            raise HTTPException(
+                status_code=400, detail="Order must contain at least one item"
+            )
 
-        # Aggregate quantities per product to avoid duplicate queries
+        # Aggregate quantities to handle multiple items of the same product
         requested_quantities: dict[int, int] = {}
         for item in order.items:
-            requested_quantities[item.product_id] = requested_quantities.get(item.product_id, 0) + item.quantity
+            requested_quantities[item.product_id] = (
+                requested_quantities.get(item.product_id, 0) + item.quantity
+            )
 
-        query = db.query(Product).filter(Product.id.in_(product_ids))
-        if db.bind and db.bind.dialect.name != "sqlite":
-            query = query.with_for_update()
+        product_ids = list(requested_quantities.keys())
+        products = {
+            p.id: p for p in db.query(Product).filter(Product.id.in_(product_ids)).all()
+        }
 
-        products = {product.id: product for product in query.all()}
-
-        missing_products = set(product_ids) - set(products.keys())
-        if missing_products:
-            missing_id = next(iter(missing_products))
-            raise HTTPException(status_code=404, detail=f"Product with id {missing_id} not found")
-
-        insufficient_stock = []
-        for product_id, quantity in requested_quantities.items():
-            product = products[product_id]
-            if product.stock < quantity:
-                insufficient_stock.append(
-                    {
-                        "product_id": product.id,
-                        "product_name": product.name,
-                        "requested": quantity,
-                        "available": product.stock,
-                    }
-                )
-
-        if insufficient_stock:
-            error_lines = [
-                f"- {item['product_name']}: requested {item['requested']}, available {item['available']}"
-                for item in insufficient_stock
-            ]
+        # Verify that all products exist
+        if len(products) != len(product_ids):
+            missing_ids = set(product_ids) - set(products.keys())
             raise HTTPException(
-                status_code=400,
-                detail="Not enough stock for products:\n" + "\n".join(error_lines),
+                status_code=404, detail=f"Product with id {next(iter(missing_ids))} not found"
             )
 
         order_items: list[OrderItem] = []
         for product_id, quantity in requested_quantities.items():
             product = products[product_id]
-            product.stock -= quantity
+
+            # Atomic update to prevent race conditions
+            update_stmt = (
+                sqlalchemy_update(Product)
+                .where(Product.id == product_id)
+                .where(Product.stock >= quantity)
+                .values(stock=Product.stock - quantity)
+            )
+
+            result = db.execute(update_stmt)
+
+            if result.rowcount == 0:
+                # The update failed, meaning stock was insufficient
+                db.rollback()
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Not enough stock for product: {product.name}",
+                )
+
             order_items.append(
                 OrderItem(
-                    product_id=product_id,
+                    product_id=product.id,
                     quantity=quantity,
                     price=product.price,
                 )
             )
-            logger.info("Product %s added to order. Stock: %s", product.name, product.stock)
+            logger.info("Product %s added to order. Stock updated.", product.name)
 
         db_order = Order(
             status=OrderStatus.PENDING,
@@ -80,7 +80,7 @@ def create_order(db: Session, order: OrderCreate) -> Order:
 
         db.add(db_order)
         db.commit()
-        db.refresh(db_order)
+        # db.refresh(db_order)  # Removed to prevent "Could not refresh instance" error in threaded tests
         logger.info("Order created successfully with ID: %s", db_order.id)
         return db_order
     except HTTPException:
@@ -90,6 +90,7 @@ def create_order(db: Session, order: OrderCreate) -> Order:
         logger.error("Error creating order: %s", str(e))
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error creating order: {str(e)}")
+
 
 # Get paginated list of all orders
 def get_orders(db: Session, skip: int = 0, limit: int = 100) -> list[Order]:   
@@ -137,4 +138,3 @@ def delete_order(db: Session, order_id: int) -> bool:
         logger.error(f"Error deleting order: {str(e)}")
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error deleting order: {str(e)}")
-
