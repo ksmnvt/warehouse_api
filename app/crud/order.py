@@ -80,10 +80,7 @@ def create_order(db: Session, order: OrderCreate) -> Order:
 
         db.add(db_order)
         db.commit()
-        try:
-            db.refresh(db_order)
-        except Exception as e:
-            logger.warning(f"Could not refresh order instance, likely due to a concurrent transaction: {e}")
+        db.refresh(db_order)
         logger.info("Order created successfully with ID: %s", db_order.id)
         return db_order
     except HTTPException:
