@@ -124,7 +124,7 @@ def test_create_order_insufficient_stock(client: TestClient):
     
     response = client.post("/orders/", json=order_data)
     assert response.status_code == 400
-    assert "Not enough stock" in response.text
+    assert "Not enough stock for product: Test Product" in response.text
 
 def test_create_order_with_nonexistent_product(client: TestClient):
     """Tests creating an order with a non-existent product"""
